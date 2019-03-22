@@ -248,6 +248,8 @@ int main(int argc, char** argv) {
    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
    glutInitWindowSize(800, 600);
    glutCreateWindow("CSCI 3090u Texture Mapping in OpenGL");
+   glClearColor(1,1,1,1);
+
    glutIdleFunc(&update);
    glutDisplayFunc(&render);
    glutReshapeFunc(&reshape);
