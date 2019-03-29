@@ -20,23 +20,25 @@ void UVTorus::save(const std::string filename) {
   float deltaTheta = (M_PI * 2.0) / this->numVerticalSegments;
   float deltaPhi = (M_PI * 2.0) / this->numHorizontalSegments;
   float phi = 0.0f;
-  float theta = 0.0f
+  float theta = 0.0f;
+  int i = 0;
   // generate one circle at this longitude
   for (float theta = 0.0f; theta < 2*M_PI+deltaTheta; theta += deltaTheta) {
 	  phi = 0.0f;
 	  for(float phi = 0.0f; phi < 2*M_PI+deltaPhi; phi += deltaPhi){
-	  }
 		  // generate two vertices
 		  //vertices
 		  float x = (this->cValue + this->radius*cos(theta))*cos(phi);
-		  float y = (this->cValue + this->radius * sin(theta))*cos(phi);
-		  float z = this->radius*sin(theta);    
-		  glm::vec3 posT(x, y, z);
-		  positions.push_back(posT);
-		 
+		  float y = (this->cValue + this->radius * cos(theta))*sin(phi);
+		  float z = this->radius*sin(theta);
+		  //cout << "X:" << x << "Y:" << y << "Z:" << z << endl;
+		  glm::vec3 posO(x, y, z);
+		  positions.push_back(posO);
 		  float xI = (this->cValue + this->radius*cos(theta + deltaTheta))*cos(phi +deltaPhi);
-		  float yI = (this->cValue + this->radius * sin(theta))*cos(phi);
+		  float yI = (this->cValue + this->radius * cos(theta+deltaTheta))*sin(phi+deltaPhi);
 		  float zI = this->radius*sin(theta); 
+		  glm::vec3 posI(x, y, z);
+		  positions.push_back(posI);
 		  
 		  // texture coords, unnecessary
 		  float uB = theta / (2.0 * M_PI);
@@ -45,37 +47,28 @@ void UVTorus::save(const std::string filename) {
 		  glm::vec2 uvB(uB,vB);
 		  textureCoords.push_back(uvB);
 		  // calculate the surface normals for top
-		  glm::vec3 normalT = glm::normalize(posT - centreT);
+		  glm::vec3 normalT = glm::normalize(posO - centreT);
 		  normals.push_back(normalT);
 		  
 		  // calculate the surface normals for bot
-		  glm::vec3 normalB = glm::normalize(posT - centreB);
+		  glm::vec3 normalB = glm::normalize(posI - centreB);
 		  normals.push_back(normalB);
 		  
-		  if (long_I > 0) {
+		  /*vertexIndices.push_back(i+(i*2));
+		  vertexIndices.push_back(i+(i*2) + 1);
+		  vertexIndices.push_back(i+(i*2) + 2);*/
+		   if (theta> 0) {
 			// now we figure out the patterns
 			unsigned int a = positions.size() - 1;
 			unsigned int b = positions.size() - 2;
 			unsigned int c = positions.size() - 3;
 			unsigned int d = positions.size() - 4;
-			// first triangle (side)
-			vertexIndices.push_back(b);
-			vertexIndices.push_back(d);
-			vertexIndices.push_back(a);
-			// second triangle (side)
-			vertexIndices.push_back(c);
-			vertexIndices.push_back(d);
-			vertexIndices.push_back(a);
-			// side to top
-			vertexIndices.push_back(a);
-			vertexIndices.push_back(1);
-			vertexIndices.push_back(c);
-			// side to bot
 			vertexIndices.push_back(b);
 			vertexIndices.push_back(0);
-			vertexIndices.push_back(d);
-			
+			vertexIndices.push_back(d);			
 		  }
+		  //i++;
+	  }	  
   }
   std::ofstream fileOut(filename.c_str());
 
