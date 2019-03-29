@@ -32,6 +32,13 @@ GLuint normals_vbo = 0;
 GLuint colours_vbo = 0;
 GLuint textureId;
 
+GLfloat xRotated, yRotated, zRotated;
+GLdouble innerRadius = 0.25;
+GLdouble outerRadius = 0.8;
+GLint sides = 50;
+GLint rings = 50;
+
+
 unsigned int numVertices;
 
 bool rotating = true;
@@ -127,6 +134,12 @@ float angle = 0.0f;
 static void update(void) {
    int milliseconds = glutGet(GLUT_ELAPSED_TIME);
 
+   //torus
+   xRotated = xRotated + 0.01;
+   yRotated += 0.01;
+   zRotated += 0.01;
+
+
    // we'll rotate our model by an ever-increasing angle so that we can see the texture
    if (rotating) {
       float degrees = (float)milliseconds / 10.0f;
@@ -136,31 +149,48 @@ static void update(void) {
    glutPostRedisplay();
 }
 
-static void render(void) {
-   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//torus
+void myinit()
+{
+	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat mat_shininess[] = { 50.0 };
+	GLfloat light_position[] = { -0.4, 1.0, -0.5, 0.0 };
 
-   // activate our shader program
+	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_DEPTH_TEST);
+}
+
+
+static void render(void) {
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW);
+	// clear the drawing buffer.
+	glClear(GL_COLOR_BUFFER_BIT);
+	// clear the identity matrix.
+	glLoadIdentity();
+	glTranslatef(0.0, 0.0, -5.0);
+	glColor3f(0.0, 0.0, 0.0);
+	glRotatef(zRotated, 0.0, 0.0, 1.0);
+	// scaling transfomation 
+	glScalef(1.0, 1.0, 1.0);
+	// built-in (glut library) function , draw you a sphere.
+	glUseProgram(0);
+	glutSolidTorus(innerRadius, outerRadius, sides, rings);
 	glUseProgram(programId);
 
    // turn on depth buffering
    glEnable(GL_DEPTH_TEST);
 
-   // projection matrix - perspective projection
-   // FOV:           45°
-   // Aspect ratio:  4:3 ratio
-   // Z range:       between 0.1 and 100.0
+ 
    float aspectRatio = (float)width / (float)height;
    glm::mat4 projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 1000.0f);
 
-   // projection matrix - orthographic (non-perspective) projection
-   // Note:  These are in world coordinates
-   // xMin:          -10
-   // xMax:          +10
-   // yMin:          -10
-   // yMax:          +10
-   // zMin:           0
-   // zMax:          +100
-   //glm::mat4 projection = glm::ortho(-10.0f,10.0f,-10.0f,10.0f,0.0f,100.0f);
 
    // view matrix - orient everything around our preferred view
    glm::mat4 view = glm::lookAt(
@@ -219,16 +249,25 @@ static void render(void) {
    glDisableVertexAttribArray(colourAttribId);
 
 	// make the draw buffer to display buffer (i.e. display what we have drawn)
-	glutSwapBuffers();
+   //flush out the buffers
+   glFlush();
+	glutSwapBuffers(); 
 }
 
 static void reshape(int w, int h) {
-  // efficiency note:  calculating the projection matrix here only when resizing
-  //                   would save much computation in the render() method.
   glViewport(0, 0, w, h);
 
   width = w;
   height = h;
+
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+
+  glOrtho(-1.5, 1.5, -1.5*(GLfloat)480 / (GLfloat)640,
+	  1.5*(GLfloat)480 / (GLfloat)640, -10.0, 10.0);
+  glMatrixMode(GL_MODELVIEW);
+  //glViewport(0,0,w,h);  //Use the whole window for rendering
+  glLoadIdentity();
 }
 
 static void drag(int x, int y) {
@@ -245,6 +284,7 @@ static void keyboard(unsigned char key, int x, int y) {
 
 int main(int argc, char** argv) {
    glutInit(&argc, argv);
+   glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA | GLUT_DEPTH);
    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
    glutInitWindowSize(800, 600);
    glutCreateWindow("CSCI 3090u Texture Mapping in OpenGL");
@@ -256,7 +296,7 @@ int main(int argc, char** argv) {
    glutMotionFunc(&drag);
    glutMouseFunc(&mouse);
    glutKeyboardFunc(&keyboard);
-
+   myinit();
    glewInit();
    if (!GLEW_VERSION_2_0) {
       std::cerr << "OpenGL 2.0 not available" << std::endl;
