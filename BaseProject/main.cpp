@@ -53,10 +53,7 @@ float yAngle = 0.0f;
 glm::vec3 eyePosition(100, 30, 30);
 bool rotateObject = true;
 float scaleFactor = 1.0f;
-GLdouble innerRadius = 0.25;
-GLdouble outerRadius = 0.8;
-GLint sides = 50;
-GLint rings = 50;
+std::vector<GLuint> texIds;
 
 unsigned int loadTexture(char const * path);
 
@@ -89,9 +86,13 @@ static void createTexture(std::string filename) {
                0, GL_RGBA, GL_UNSIGNED_BYTE, bitmap);
     std::cout << "Image width: " << imageWidth << "\nImage hieght: " << imageHeight << std::endl;
 
+    texIds.push_back(textureId);
+
      // bind the texture to unit 0
     glBindTexture(GL_TEXTURE_2D, textureId);
     glActiveTexture(GL_TEXTURE0);
+
+
 
     // free the bitmap data
     stbi_image_free(bitmap);
@@ -214,27 +215,37 @@ static void render(void) {
 
    // model matrix: translate, scale, and rotate the model
    glm::vec3 objectPos[] = {
-     glm::vec3(-5.0f, 0.0f, 0.0f),
-     glm::vec3(10.0f,  5.0f, -15.0f),
-     //glm::vec3(-50.0f, -2.2f, -2.5f)
+     glm::vec3(-50.0f, 0.0f, 0.0f),
+     glm::vec3(20.0f,  0.0f, 0.0f),
    };
 
-   //for (unsigned int i = 0; i < 2; i++) {
 
-        glm::vec3 rotationAxis(0,1,0);
-        glm::mat4 model = glm::mat4(1.0f);
-    //    model = glm::translate(model, objectPos[i]);
-        model = glm::rotate(model, glm::radians(yAngle), glm::vec3(0, 1, 0)); // rotate about the y-axis
-        model = glm::scale(model, glm::vec3(25.0f, 25.0f, 25.0f));
+      // define for sphere
+        //glm::vec3 rotationAxis(0,1,0);
+        glm::mat4 modelS = glm::mat4(1.0f);
+        modelS = glm::rotate(modelS, glm::radians(yAngle), glm::vec3(0, 1, 0)); // rotate about the y-axis
+        modelS = glm::scale(modelS, glm::vec3(25.0f, 25.0f, 25.0f));
+
+      // define for dragon
+      //glm::vec3 rotationAxis(0,1,0);
+      glm::mat4 modelD = glm::mat4(1.0f);
+      modelD = glm::translate(modelD, objectPos[1]);
+      modelD = glm::rotate(modelD, glm::radians(yAngle), glm::vec3(0, 1, 0)); // rotate about the y-axis
+      modelD = glm::scale(modelD, glm::vec3(50.0f, 25.0f, 25.0f));
+
+
+
+      // connect sphere first with model, do changes then look into dragon
 
         // model-view-projection matrix
-        glm::mat4 mvp = projection * view * model;
+        glm::mat4 mvpSphere = projection * view * modelS;
         GLuint mvpMatrixId = glGetUniformLocation(programId, "MVP");
-        glUniformMatrix4fv(mvpMatrixId, 1, GL_FALSE, &mvp[0][0]);
+        glUniformMatrix4fv(mvpMatrixId, 1, GL_FALSE, &mvpSphere[0][0]);
 
+        // applying texture to sphere
         GLuint textureUniformId = glGetUniformLocation(programId, "textureSampler");
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureId);
+        glBindTexture(GL_TEXTURE_2D, texIds.at(0));
         glUniform1i(textureUniformId, 0);
 
         // find the names (ids) of each vertex attribute
@@ -266,7 +277,19 @@ static void render(void) {
         glDisableVertexAttribArray(colourAttribIdO);
 
 
+
+
+
        // draogn object
+
+       glm::mat4 mvpDragon = projection * view * modelD;
+       glUniformMatrix4fv(mvpMatrixId, 1, GL_FALSE, &mvpDragon[0][0]);
+
+       //GLuint textureUniformId = glGetUniformLocation(programId, "textureSampler");
+       glActiveTexture(GL_TEXTURE0);
+       glBindTexture(GL_TEXTURE_2D, texIds.at(1));
+       glUniform1i(textureUniformId, 0);
+
        GLint positionAttribIdT = glGetAttribLocation(programId, "position");
        GLint colourAttribIdT = glGetAttribLocation(programId, "colour");
        GLint textureCoordsAttribIdT = glGetAttribLocation(programId, "textureCoords");
@@ -293,7 +316,6 @@ static void render(void) {
        glDrawElements(GL_TRIANGLES, numVerticesD, GL_UNSIGNED_INT, (void*)0);
 
        // disable the attribute arrays
-        glDisableVertexAttribArray(positionAttribIdO);
         glDisableVertexAttribArray(positionAttribIdT);
         glDisableVertexAttribArray(textureCoordsAttribIdT);
         glDisableVertexAttribArray(normalAttribIdT);
@@ -353,6 +375,7 @@ int main(int argc, char** argv) {
     createGeometry();
 
     createTexture("textures/basketball.jpg");
+    createTexture("textures/scale.png");
 
     ShaderProgram program;
     program.loadShaders("shaders/vertex.glsl", "shaders/fragment.glsl");
