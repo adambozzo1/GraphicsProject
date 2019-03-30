@@ -1,3 +1,4 @@
+//program making the torus
 #include "UVTorus.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -22,7 +23,7 @@ void UVTorus::save(const std::string filename) {
   float phi = 0.0f;
   float theta = 0.0f;
   int i = 0;
-  // generate one circle at this longitude
+  //for loops for creating the torus coordinates and normals
   for (float theta = 0.0f; theta < 2*M_PI+deltaTheta; theta += deltaTheta) {
 	  phi = 0.0f;
 	  for(float phi = 0.0f; phi < 2*M_PI+deltaPhi; phi += deltaPhi){

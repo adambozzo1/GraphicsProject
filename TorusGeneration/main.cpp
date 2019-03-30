@@ -1,3 +1,4 @@
+//program to create the torus
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -57,7 +58,6 @@ static void createGeometry(void) {
   mesh.load("my_torus.obj", true, true);
 
   std::cout << "Finished loading torus .obj file." << std::endl;
-
   numVertices = mesh.getNumIndexedVertices();
   Vector3* vertexPositions = mesh.getIndexedPositions();
   Vector2* vertexTextureCoords = mesh.getIndexedTextureCoords();
@@ -106,29 +106,11 @@ static void render(void) {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   // activate our shader program
-	glUseProgram(programId);
-
-  // turn on depth buffering
+  glUseProgram(programId);
   glEnable(GL_DEPTH_TEST);
-
-  // projection matrix - perspective projection
-  // FOV:           45°
-  // Aspect ratio:  4:3 ratio
-  // Z range:       between 0.1 and 100.0
   float aspectRatio = (float)width / (float)height;
   glm::mat4 projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 1000.0f);
 
-  // projection matrix - orthographic (non-perspective) projection
-  // Note:  These are in world coordinates
-  // xMin:          -10
-  // xMax:          +10
-  // yMin:          -10
-  // yMax:          +10
-  // zMin:           0
-  // zMax:          +100
-  //glm::mat4 projection = glm::ortho(-10.0f,10.0f,-10.0f,10.0f,0.0f,100.0f);
-
-  // view matrix - orient everything around our preferred view
   glm::mat4 view = glm::lookAt(
       eyePosition,
       glm::vec3(0,0,0),    // where to look
@@ -193,8 +175,8 @@ static void render(void) {
   glVertexAttribPointer(normalAttribId, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
 	// draw the triangles
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-	glDrawElements(GL_TRIANGLES, numVertices, GL_UNSIGNED_INT, (void*)0);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+  glDrawElements(GL_TRIANGLES, numVertices, GL_UNSIGNED_INT, (void*)0);
 
   // for testing purposes
   //glutSolidTorus(0.5f, 1.5f, 12, 10);

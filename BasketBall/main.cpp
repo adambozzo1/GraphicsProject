@@ -33,69 +33,36 @@ GLuint colours_vbo = 0;
 GLuint textureId;
 
 GLfloat xRotated, yRotated, zRotated;
-GLdouble innerRadius = 0.25;
+GLdouble innerRadius = 0.30;
 GLdouble outerRadius = 0.8;
 GLint sides = 50;
 GLint rings = 50;
 
 
 unsigned int numVertices;
-
 bool rotating = true;
-
 unsigned int loadTexture(char const * path);
 
 static void createTexture(std::string filename) {
    int imageWidth, imageHeight;
    int numComponents;
-
    // load the image data into a bitmap
-   unsigned char *bitmap = stbi_load(filename.c_str(),
-                                     &imageWidth,
-                                     &imageHeight,
-                                     &numComponents, 4);
-
+   unsigned char *bitmap = stbi_load(filename.c_str(), &imageWidth, &imageHeight, &numComponents, 4);
    // generate a texture name
    glGenTextures(1, &textureId);
-
    // make the texture active
    glBindTexture(GL_TEXTURE_2D, textureId);
-
    // make a texture mip map
    glGenerateTextureMipmap(textureId);
    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE);
-
    // specify the functions to use when shrinking/enlarging the texture image
-   
-   // don't use the two lines below, its disoriented
-   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-   
-   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-   
-   
    // recommended to use this glTexParamterics (GL_LINEAR make it much smoother than NEAREST)
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-   // specify the tiling parameters
-   // GL CLAMP TO EDGE smudges the surface
-   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-   //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-   
-   // recommendeded to use GL_REPEAT
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
    // send the data to OpenGL
-   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, imageWidth, imageHeight,
-                0, GL_RGBA, GL_UNSIGNED_BYTE, bitmap);
-
-   // bind the texture to unit 0
-   glBindTexture(GL_TEXTURE_2D, textureId);
-   glActiveTexture(GL_TEXTURE0);
-
+   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, imageWidth, imageHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, bitmap);
    // free the bitmap data
    stbi_image_free(bitmap);
 }
@@ -109,14 +76,17 @@ static void createGeometry(void) {
   Vector2* vertexTextureCoords = mesh.getIndexedTextureCoords();
   Vector3* vertexNormals = mesh.getIndexedNormals();
 
+  //position buffer
   glGenBuffers(1, &positions_vbo);
   glBindBuffer(GL_ARRAY_BUFFER, positions_vbo);
   glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(Vector3), vertexPositions, GL_STATIC_DRAW);
 
+  //texture buffer
   glGenBuffers(1, &textureCoords_vbo);
   glBindBuffer(GL_ARRAY_BUFFER, textureCoords_vbo);
   glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(Vector2), vertexTextureCoords, GL_STATIC_DRAW);
 
+  //normals buffer
   glGenBuffers(1, &normals_vbo);
   glBindBuffer(GL_ARRAY_BUFFER, normals_vbo);
   glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(Vector3), vertexNormals, GL_STATIC_DRAW);
@@ -131,21 +101,18 @@ static void createGeometry(void) {
 
 float angle = 0.0f;
 
+//method for updating the model
 static void update(void) {
    int milliseconds = glutGet(GLUT_ELAPSED_TIME);
-
    //torus
    xRotated = xRotated + 0.01;
    yRotated += 0.01;
    zRotated += 0.01;
-
-
-   // we'll rotate our model by an ever-increasing angle so that we can see the texture
+   //used to rotate the model
    if (rotating) {
       float degrees = (float)milliseconds / 10.0f;
       angle = degrees;
    }
-
    glutPostRedisplay();
 }
 
@@ -155,19 +122,16 @@ void myinit()
 	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
 	GLfloat mat_shininess[] = { 50.0 };
 	GLfloat light_position[] = { -0.4, 1.0, -0.5, 0.0 };
-
 	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
 	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 	glEnable(GL_DEPTH_TEST);
 }
 
-
 static void render(void) {
-
+	glClearColor(0.95f, 0.9f, 0.6f, 0.0f) ;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	// clear the drawing buffer.
@@ -183,15 +147,12 @@ static void render(void) {
 	glUseProgram(0);
 	glutSolidTorus(innerRadius, outerRadius, sides, rings);
 	glUseProgram(programId);
-
    // turn on depth buffering
    glEnable(GL_DEPTH_TEST);
 
- 
    float aspectRatio = (float)width / (float)height;
    glm::mat4 projection = glm::perspective(glm::radians(45.0f), aspectRatio, 0.1f, 1000.0f);
-
-
+   
    // view matrix - orient everything around our preferred view
    glm::mat4 view = glm::lookAt(
       glm::vec3(40,30,30), // eye/camera location
@@ -289,7 +250,6 @@ int main(int argc, char** argv) {
    glutInitWindowSize(800, 600);
    glutCreateWindow("CSCI 3090u Texture Mapping in OpenGL");
    glClearColor(1,1,1,1);
-
    glutIdleFunc(&update);
    glutDisplayFunc(&render);
    glutReshapeFunc(&reshape);
@@ -303,7 +263,7 @@ int main(int argc, char** argv) {
       return 1;
    }
    std::cout << "Using GLEW " << glewGetString(GLEW_VERSION) << std::endl;
-	std::cout << "Using OpenGL " << glGetString(GL_VERSION) << std::endl;
+   std::cout << "Using OpenGL " << glGetString(GL_VERSION) << std::endl;
 
    createGeometry();
 
