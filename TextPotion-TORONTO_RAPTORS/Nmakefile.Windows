@@ -1,0 +1,9 @@
+text.exe: main.obj
+	link /machine:X86 /nologo /out:text.exe /SUBSYSTEM:console main.obj opengl32.lib lib\glut32.lib lib\glew32.lib
+
+.cpp.obj:
+	cl /I include /EHsc /nologo /Fo$@ /c $<
+
+clean:
+	del text.exe
+  del *.obj

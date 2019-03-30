@@ -39,8 +39,8 @@ float maxArmRotation = 160.0f;
 float upperArmRotation = 45.0f;
 float upperArmRotationSpeed = 1.0f;
 
-void drawFinger(glm::vec3 position, glm::vec3 scale, float angle) ;
-void drawCube(glm::mat4 modelMatrix, glm::vec4 colour);
+void drawLetter(glm::vec3 position, glm::vec3 scale, float angle) ;
+void drawElongatedCube(glm::mat4 modelMatrix, glm::vec4 colour);
 static GLuint createShaderProgram(const std::string& vertexShaderSource, const std::string& fragmentShaderSource);
 static GLuint createShader(const GLenum shaderType, const std::string shaderSource);
 
@@ -104,53 +104,103 @@ static void render(void) {
   glm::mat4 modelMatrix = glm::mat4(1.0f);
   modelMatrix = glm::scale(modelMatrix, glm::vec3(2.4f, 2.4f, 0.5f));
   modelMatrix = glm::translate(modelMatrix, glm::vec3(0.0f, -1.5f, 0.0f));
-  //drawCube(modelMatrix, red);
 
-  // TODO:  Draw the fingers (and thumb)
   // (x, y, z)
 
   glm::vec3 bp = glm::vec3(glm::vec3(0.0f, 0.0f, 0.0f));
-  glm::vec3 bs = glm::vec3(glm::vec3(0.0f, 0.0f, 0.4f));
+  // this code does the scaling
+  glm::vec3 bs = glm::vec3(glm::vec3(0.0f, 0.0f, 0.25f));
   glm::vec3 br = glm::vec3(glm::vec3(0.0f, 0.0f, 0.0f));
   float angle = 0.0f;
 
   // basic
-  //drawFinger(glm::vec3(bp.x, bp.y, bp.z), glm::vec3(bs.x + 0.5, bs.y + 0.5, bs.z), 0);  //
+  //drawLetter(glm::vec3(bp.x, bp.y, bp.z), glm::vec3(bs.x + 0.5, bs.y + 0.5, bs.z), 0);  //
+
+  // -------------------------- TORONTO -------------------------------------------------------
 
   // T
-  drawFinger(glm::vec3(bp.x - 10, bp.y + 6, bp.z), glm::vec3(bs.x + 1.0, bs.y + 0.3, bs.z), angle);  // -
-  drawFinger(glm::vec3(bp.x - 10, bp.y + 4.25, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.5, bs.z), angle);  // |
+  drawLetter(glm::vec3(bp.x - 10, bp.y + 6, bp.z), glm::vec3(bs.x + 1.0, bs.y + 0.3, bs.z), angle);  // -
+  drawLetter(glm::vec3(bp.x - 10, bp.y + 4.25, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.5, bs.z), angle);  // |
 
   // O
-  drawFinger(glm::vec3(bp.x - 8, bp.y + 4.25, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.5, bs.z), angle);  // |
-  drawFinger(glm::vec3(bp.x - 6.4, bp.y + 4.25, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.5, bs.z), angle);  // |
-  drawFinger(glm::vec3(bp.x - 7.2, bp.y + 6, bp.z), glm::vec3(bs.x + 1.1, bs.y + 0.3, bs.z), angle);  // -
-  drawFinger(glm::vec3(bp.x - 7.2, bp.y + 3, bp.z), glm::vec3(bs.x + 1.1, bs.y + 0.3, bs.z), angle);  // -
+  drawLetter(glm::vec3(bp.x - 8, bp.y + 4.25, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.5, bs.z), angle);  // |
+  drawLetter(glm::vec3(bp.x - 6.4, bp.y + 4.25, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.5, bs.z), angle);  // |
+  drawLetter(glm::vec3(bp.x - 7.2, bp.y + 6, bp.z), glm::vec3(bs.x + 1.1, bs.y + 0.3, bs.z), angle);  // -
+  drawLetter(glm::vec3(bp.x - 7.2, bp.y + 3, bp.z), glm::vec3(bs.x + 1.1, bs.y + 0.3, bs.z), angle);  // -
 
   // R
-  drawFinger(glm::vec3(bp.x - 4.8, bp.y + 4.5, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.8, bs.z), angle);  // |
-  drawFinger(glm::vec3(bp.x - 4.1, bp.y + 6, bp.z), glm::vec3(bs.x + 1.0, bs.y + 0.3, bs.z), angle);  // -
-  drawFinger(glm::vec3(bp.x - 4.1, bp.y + 4.5, bp.z), glm::vec3(bs.x + 1.0, bs.y + 0.3, bs.z), angle);  // -
-  drawFinger(glm::vec3(bp.x - 3.4, bp.y + 5.3, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1, bs.z), angle);  // |
-  drawFinger(glm::vec3(bp.x - 3.7, bp.y + 3.7, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1, bs.z), angle + 25);  // |
+  drawLetter(glm::vec3(bp.x - 4.8, bp.y + 4.5, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.8, bs.z), angle);  // |
+  drawLetter(glm::vec3(bp.x - 4.1, bp.y + 6, bp.z), glm::vec3(bs.x + 1.0, bs.y + 0.3, bs.z), angle);  // -
+  drawLetter(glm::vec3(bp.x - 4.1, bp.y + 4.5, bp.z), glm::vec3(bs.x + 1.0, bs.y + 0.3, bs.z), angle);  // -
+  drawLetter(glm::vec3(bp.x - 3.4, bp.y + 5.3, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1, bs.z), angle);  // |
+  drawLetter(glm::vec3(bp.x - 3.7, bp.y + 3.7, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1, bs.z), angle + 25);  // |
 
   // O
-  drawFinger(glm::vec3(bp.x - 1.8, bp.y + 4.25, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.5, bs.z), angle);  // |
-  drawFinger(glm::vec3(bp.x - 0.2, bp.y + 4.25, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.5, bs.z), angle);  // |
-  drawFinger(glm::vec3(bp.x - 1.0, bp.y + 6, bp.z), glm::vec3(bs.x + 1.1, bs.y + 0.3, bs.z), angle);  // -
-  drawFinger(glm::vec3(bp.x - 1.0, bp.y + 3, bp.z), glm::vec3(bs.x + 1.1, bs.y + 0.3, bs.z), angle);  // -
+  drawLetter(glm::vec3(bp.x - 1.8, bp.y + 4.25, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.5, bs.z), angle);  // |
+  drawLetter(glm::vec3(bp.x - 0.2, bp.y + 4.25, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.5, bs.z), angle);  // |
+  drawLetter(glm::vec3(bp.x - 1.0, bp.y + 6, bp.z), glm::vec3(bs.x + 1.1, bs.y + 0.3, bs.z), angle);  // -
+  drawLetter(glm::vec3(bp.x - 1.0, bp.y + 3, bp.z), glm::vec3(bs.x + 1.1, bs.y + 0.3, bs.z), angle);  // -
 
-  // ignore N for now
+  // N
+  drawLetter(glm::vec3(bp.x + 1.4, bp.y + 4.5, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.8, bs.z), angle);  // |
+  drawLetter(glm::vec3(bp.x + 3.2, bp.y + 4.5, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.8, bs.z), angle);  // |
+  drawLetter(glm::vec3(bp.x + 2.3, bp.y + 4.5, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.9, bs.z), angle + 28);  // |
 
   // T
-  drawFinger(glm::vec3(bp.x + 2, bp.y + 6, bp.z), glm::vec3(bs.x + 1.0, bs.y + 0.3, bs.z), angle);  // -
-  drawFinger(glm::vec3(bp.x + 2, bp.y + 4.25, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.5, bs.z), angle);  // |
+  drawLetter(glm::vec3(bp.x + 5.2, bp.y + 6, bp.z), glm::vec3(bs.x + 1.0, bs.y + 0.3, bs.z), angle);  // -
+  drawLetter(glm::vec3(bp.x + 5.2, bp.y + 4.25, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.5, bs.z), angle);  // |
 
   // O
-  drawFinger(glm::vec3(bp.x + 4, bp.y + 4.25, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.5, bs.z), angle);  // |
-  drawFinger(glm::vec3(bp.x + 5.6, bp.y + 4.25, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.5, bs.z), angle);  // |
-  drawFinger(glm::vec3(bp.x + 4.8, bp.y + 6, bp.z), glm::vec3(bs.x + 1.1, bs.y + 0.3, bs.z), angle);  // -
-  drawFinger(glm::vec3(bp.x + 4.8, bp.y + 3, bp.z), glm::vec3(bs.x + 1.1, bs.y + 0.3, bs.z), angle);  // -
+  drawLetter(glm::vec3(bp.x + 7.2, bp.y + 4.25, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.5, bs.z), angle);  // |
+  drawLetter(glm::vec3(bp.x + 8.8, bp.y + 4.25, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.5, bs.z), angle);  // |
+  drawLetter(glm::vec3(bp.x + 8, bp.y + 6, bp.z), glm::vec3(bs.x + 1.1, bs.y + 0.3, bs.z), angle);  // -
+  drawLetter(glm::vec3(bp.x + 8, bp.y + 3, bp.z), glm::vec3(bs.x + 1.1, bs.y + 0.3, bs.z), angle);  // -
+
+
+
+  // ------------------------------RAPTORS--------------------------------------
+  // R
+  drawLetter(glm::vec3(bp.x - 10.6, bp.y  -1, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.8, bs.z), angle);  // |
+  drawLetter(glm::vec3(bp.x - 9.9, bp.y + 0.5, bp.z), glm::vec3(bs.x + 1.0, bs.y + 0.3, bs.z), angle);  // -
+  drawLetter(glm::vec3(bp.x - 9.9, bp.y  -1, bp.z), glm::vec3(bs.x + 1.0, bs.y + 0.3, bs.z), angle);  // -
+  drawLetter(glm::vec3(bp.x - 9.2, bp.y - 0.2, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1, bs.z), angle);  // |
+  drawLetter(glm::vec3(bp.x - 9.5, bp.y - 1.8, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1, bs.z), angle + 25);  // |
+
+  // A
+  drawLetter(glm::vec3(bp.x - 6, bp.y - 1, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.9, bs.z), angle + 18);  // |
+  drawLetter(glm::vec3(bp.x - 7.3, bp.y - 1, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.9, bs.z), angle + 162);  // |
+  drawLetter(glm::vec3(bp.x -6.6 , bp.y + 0.5 , bp.z), glm::vec3(bs.x + 0.3, bs.y + 0.4, bs.z), 0);  //
+  drawLetter(glm::vec3(bp.x - 6.6, bp.y - 1.2, bp.z), glm::vec3(bs.x + 0.75, bs.y + 0.3, bs.z), angle);  // -
+
+  // P
+  drawLetter(glm::vec3(bp.x - 4, bp.y  -1, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.8, bs.z), angle);  // |
+  drawLetter(glm::vec3(bp.x - 3.3, bp.y + 0.5, bp.z), glm::vec3(bs.x + 1.0, bs.y + 0.3, bs.z), angle);  // -
+  drawLetter(glm::vec3(bp.x - 3.3, bp.y  -1, bp.z), glm::vec3(bs.x + 1.0, bs.y + 0.3, bs.z), angle);  // -
+  drawLetter(glm::vec3(bp.x - 2.6, bp.y - 0.2, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1, bs.z), angle);  // |
+
+  // T
+  drawLetter(glm::vec3(bp.x - 0.6, bp.y + 0.5, bp.z), glm::vec3(bs.x + 1.0, bs.y + 0.3, bs.z), angle);  // -
+  drawLetter(glm::vec3(bp.x - 0.6, bp.y + -1.25, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.5, bs.z), angle);  // |
+
+  // O
+  drawLetter(glm::vec3(bp.x + 1.4, bp.y + -1.25, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.5, bs.z), angle);  // |
+  drawLetter(glm::vec3(bp.x + 3, bp.y + -1.25, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.5, bs.z), angle);  // |
+  drawLetter(glm::vec3(bp.x + 2.2, bp.y + 0.5, bp.z), glm::vec3(bs.x + 1.1, bs.y + 0.3, bs.z), angle);  // -
+  drawLetter(glm::vec3(bp.x + 2.2, bp.y + -2.5, bp.z), glm::vec3(bs.x + 1.1, bs.y + 0.3, bs.z), angle);  // -
+
+  // R
+  drawLetter(glm::vec3(bp.x + 4.6, bp.y + -1, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.8, bs.z), angle);  // |
+  drawLetter(glm::vec3(bp.x + 5.3, bp.y + 0.5, bp.z), glm::vec3(bs.x + 1.0, bs.y + 0.3, bs.z), angle);  // -
+  drawLetter(glm::vec3(bp.x + 5.3, bp.y + -1, bp.z), glm::vec3(bs.x + 1.0, bs.y + 0.3, bs.z), angle);  // -
+  drawLetter(glm::vec3(bp.x + 6, bp.y + -0.2, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1, bs.z), angle);  // |
+  drawLetter(glm::vec3(bp.x + 5.7, bp.y + -1.8, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1, bs.z), angle + 25);  // |
+
+  // S
+  drawLetter(glm::vec3(bp.x + 7.6, bp.y + -0.3, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1.0, bs.z), angle);  // |
+  drawLetter(glm::vec3(bp.x + 8.3, bp.y + 0.5, bp.z), glm::vec3(bs.x + 1.0, bs.y + 0.3, bs.z), angle);  // -
+  drawLetter(glm::vec3(bp.x + 8.3, bp.y + -1, bp.z), glm::vec3(bs.x + 1.0, bs.y + 0.3, bs.z), angle);  // -
+  drawLetter(glm::vec3(bp.x + 9, bp.y + -1.8, bp.z), glm::vec3(bs.x + 0.3, bs.y + 1, bs.z), angle);  // |
+  drawLetter(glm::vec3(bp.x + 8.3, bp.y + -2.5, bp.z), glm::vec3(bs.x + 1.0, bs.y + 0.3, bs.z), angle);  // -
 
 
 
@@ -158,7 +208,7 @@ static void render(void) {
   glutSwapBuffers();
 }
 
-void drawFinger(glm::vec3 position, glm::vec3 scale, float angle)
+void drawLetter(glm::vec3 position, glm::vec3 scale, float angle)
 {
   // colours
   glm::vec4 colour1(1.0, 1.0, 1.0, 1.0);
@@ -171,11 +221,11 @@ void drawFinger(glm::vec3 position, glm::vec3 scale, float angle)
   mat1 = glm::rotate(mat1, glm::radians(angle),  glm::vec3(0.0f, 0.0f, 1.0f));
   mat1 = glm::scale(mat1, scale);
 
-  drawCube(mat1, colour1);
+  drawElongatedCube(mat1, colour1);
 
 }
 
-void drawCube(glm::mat4 modelMatrix, glm::vec4 colour) {
+void drawElongatedCube(glm::mat4 modelMatrix, glm::vec4 colour) {
   // model-view-projection matrix
   glm::mat4 mvp = projectionMatrix * viewMatrix * modelMatrix;
   GLuint mvpMatrixId = glGetUniformLocation(programId, "u_MVP");
@@ -234,7 +284,7 @@ int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
     glutInitWindowSize(800, 600);
-    windowId = glutCreateWindow("Lab 02");
+    windowId = glutCreateWindow("TORONTO-RAPTORS 3D TEXT!");
     glutIdleFunc(&update);
     glutDisplayFunc(&render);
     glutReshapeFunc(&reshape);
