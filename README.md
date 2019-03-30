@@ -1,1 +1,3 @@
 # GraphicsProject
+
+initially our main project folder was base project. The other folders are all work we tried inorder to get the logo, by implementing this project in parts. We tried to get the obj file for a torus manually but failed. Our work that we tried is in the Torus Generation Folder. Our goal was to use this obj file and scale the sphere and torus for the raptors logo as its base. This failed and we even tried to get an obj file compatible but still failed. Due to circumstances we used a built in function to generate the torus and basektball. The code for manually integrating two objects in one model view is in base project. This took time to get it working. Part marks for all that work would be trully appreciated it. Thank you.
