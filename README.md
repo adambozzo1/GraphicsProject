@@ -4,9 +4,11 @@ Initially our main project folder was base project. The other folders are all wo
 
 The "TextPotion-TORONTO_RAPTORS" folder contains the text that we tried to integrate into the main project which did not end up working. Currently the program is ran through the "RaptorsLogo-MAIN" folder. 
 
-"RaptorsLogo-MAIN" folder has a sphere which spins and a torus which rotates in z axis, also few lighting tweaks were done on the torus.
+**"RaptorsLogo-MAIN"** folder has a sphere which spins and a torus which rotates in z axis, also few lighting tweaks were done on the torus.
 
-"TextPotion-TORONTO_RAPTORS" contains text which we failed to integrate with the main logo. The text was meant to be placed on top of the torus in a curve formation resembling the actual raptors logo.
+**"TextPotion-TORONTO_RAPTORS"** contains text which we failed to integrate with the main logo. The text was meant to be placed on top of the torus in a curve formation resembling the actual raptors logo.
+
+You specifically only need to run the two folders above for the project (*RaptorsLogo-MAIN* and *TextPotion-TORONTO_RAPTORS*), the rest are there to show that we have tried various approaches to do it and have put in considerable work to make them work. We would be grateful if you can take a look at them, if possible!
 
 Part marks for all that work would be trully appreciated. Thank you!
 
