@@ -6,7 +6,7 @@ The "TextPotion-TORONTO_RAPTORS" folder contains the text that we tried to integ
 
 "RaptorsLogo-MAIN" folder has a sphere which spins and a torus which rotates in z axis, also few lighting tweaks were done on the torus.
 
-"TextPotion-TORONTO_RAPTORS" contains text which we failed to integrate with the main logo. The text was meant to placed on top of the torus in a curve formation resembling the actual raptors logo.
+"TextPotion-TORONTO_RAPTORS" contains text which we failed to integrate with the main logo. The text was meant to be placed on top of the torus in a curve formation resembling the actual raptors logo.
 
 Part marks for all that work would be trully appreciated. Thank you!
 
