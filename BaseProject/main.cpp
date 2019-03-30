@@ -103,26 +103,22 @@ static void createGeometry() {
   ObjMesh sphere;
   sphere.load("meshes/sphere.obj", true, true);
 
-  ObjMesh dragon;
-  dragon.load("meshes/dragon.obj", true, true);
+  ObjMesh torus;
+  torus.load("meshes/resources_models_torus.obj", true, true);
 
-  //ObjMesh objects[] = {mesh, dragon};
 
 
   cout << "Finished loading obj files." << endl;
-  // use glGenBuffer, bindbuffer and buffer data to play around with assignment of gl data
-
-  // need to figure out a way to get this to work with each thing.. sphere and dragon for each vbo for each of these obj files..
-
+  
     numVerticesS = sphere.getNumIndexedVertices();
     Vector3* vertexPositionsS = sphere.getIndexedPositions();
     Vector2* vertexTextureCoordsS = sphere.getIndexedTextureCoords();
     Vector3* vertexNormalsS = sphere.getIndexedNormals();
 
-    numVerticesD = dragon.getNumIndexedVertices();
-    Vector3* vertexPositionsD = dragon.getIndexedPositions();
-    Vector2* vertexTextureCoordsD = dragon.getIndexedTextureCoords();
-    Vector3* vertexNormalsD = dragon.getIndexedNormals();
+    numVerticesD = torus.getNumIndexedVertices();
+    Vector3* vertexPositionsD = torus.getIndexedPositions();
+    Vector2* vertexTextureCoordsD = torus.getIndexedTextureCoords();
+    Vector3* vertexNormalsD = torus.getIndexedNormals();
 
     // now we do the actual passing of information to the vertex shader
 
@@ -132,7 +128,7 @@ static void createGeometry() {
     glBindBuffer(GL_ARRAY_BUFFER, positions_vboO);
     glBufferData(GL_ARRAY_BUFFER, numVerticesS * sizeof(Vector3), vertexPositionsS, GL_STATIC_DRAW);
 
-    // pos data for dragon
+    // pos data for torus
     positions_vboT;
     glGenBuffers(1, &positions_vboT);
     glBindBuffer(GL_ARRAY_BUFFER, positions_vboT);
@@ -144,7 +140,7 @@ static void createGeometry() {
     glBindBuffer(GL_ARRAY_BUFFER, textureCoords_vboO);
     glBufferData(GL_ARRAY_BUFFER, numVerticesS * sizeof(Vector2), vertexTextureCoordsS, GL_STATIC_DRAW);
 
-    // texture data for dragon
+    // texture data for torus
     textureCoords_vboT;
     glGenBuffers(1, &textureCoords_vboT);
     glBindBuffer(GL_ARRAY_BUFFER, textureCoords_vboT);
@@ -156,17 +152,17 @@ static void createGeometry() {
     glBindBuffer(GL_ARRAY_BUFFER, normals_vboO);
     glBufferData(GL_ARRAY_BUFFER, numVerticesS * sizeof(Vector3), vertexNormalsS, GL_STATIC_DRAW);
 
-    // normal data for dragon
+    // normal data for torus
     normals_vboT;
     glGenBuffers(1, &normals_vboT);
     glBindBuffer(GL_ARRAY_BUFFER, normals_vboT);
     glBufferData(GL_ARRAY_BUFFER, numVerticesD * sizeof(Vector3), vertexNormalsD, GL_STATIC_DRAW);
 
     unsigned int* indexDataS = sphere.getTriangleIndices();
-    unsigned int* indexDataD = dragon.getTriangleIndices();
+    unsigned int* indexDataD = torus.getTriangleIndices();
 
     int numTrianglesS = sphere.getNumTriangles();
-    int numTrianglesD = dragon.getNumTriangles();
+    int numTrianglesD = torus.getNumTriangles();
 
     // drawing for sphere
     indexBufferO;
@@ -174,11 +170,14 @@ static void createGeometry() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * numTrianglesS * 3, indexDataS, GL_STATIC_DRAW);
 
-    // drawing for dragon
+    // drawing for torus
     indexBufferT;
     glGenBuffers(1, &indexBufferT);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferT);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * numTrianglesD * 3, indexDataD, GL_STATIC_DRAW);
+
+    std::cout << "Does this print burhh!!" << std::endl;
+    std::cout << "YOLO!!" << std::endl;
 }
 
 
@@ -226,7 +225,7 @@ static void render(void) {
         modelS = glm::rotate(modelS, glm::radians(yAngle), glm::vec3(0, 1, 0)); // rotate about the y-axis
         modelS = glm::scale(modelS, glm::vec3(25.0f, 25.0f, 25.0f));
 
-      // define for dragon
+      // define for torus
       //glm::vec3 rotationAxis(0,1,0);
       glm::mat4 modelD = glm::mat4(1.0f);
       modelD = glm::translate(modelD, objectPos[1]);
@@ -235,7 +234,7 @@ static void render(void) {
 
 
 
-      // connect sphere first with model, do changes then look into dragon
+      // connect sphere first with model, do changes then look into torus
 
         // model-view-projection matrix
         glm::mat4 mvpSphere = projection * view * modelS;
@@ -282,8 +281,8 @@ static void render(void) {
 
        // draogn object
 
-       glm::mat4 mvpDragon = projection * view * modelD;
-       glUniformMatrix4fv(mvpMatrixId, 1, GL_FALSE, &mvpDragon[0][0]);
+       glm::mat4 mvptorus = projection * view * modelD;
+       glUniformMatrix4fv(mvpMatrixId, 1, GL_FALSE, &mvptorus[0][0]);
 
        //GLuint textureUniformId = glGetUniformLocation(programId, "textureSampler");
        glActiveTexture(GL_TEXTURE0);
@@ -296,22 +295,22 @@ static void render(void) {
        GLint normalAttribIdT = glGetAttribLocation(programId, "normal");
 
 
-       // provide the vertex positions to the shaders for dragon
+       // provide the vertex positions to the shaders for torus
        glBindBuffer(GL_ARRAY_BUFFER, positions_vboT);
        glEnableVertexAttribArray(positionAttribIdT);
        glVertexAttribPointer(positionAttribIdT, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
-       // provide the vertex texture coordinates to the shaders for dragon
+       // provide the vertex texture coordinates to the shaders for torus
        glBindBuffer(GL_ARRAY_BUFFER, textureCoords_vboT);
        glEnableVertexAttribArray(textureCoordsAttribIdT);
        glVertexAttribPointer(textureCoordsAttribIdT, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 
-       // provide the vertex normals to the shaders for dragon
+       // provide the vertex normals to the shaders for torus
        glBindBuffer(GL_ARRAY_BUFFER, normals_vboT);
        glEnableVertexAttribArray(normalAttribIdT);
        glVertexAttribPointer(normalAttribIdT, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 
-       // draw dragon
+       // draw torus
        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBufferT);
        glDrawElements(GL_TRIANGLES, numVerticesD, GL_UNSIGNED_INT, (void*)0);
 
@@ -373,7 +372,7 @@ int main(int argc, char** argv) {
 		std::cout << "Using OpenGL " << glGetString(GL_VERSION) << std::endl;
 
     createGeometry();
-
+    std::cout << "Does this print?" << std::endl;
     createTexture("textures/basketball.jpg");
     createTexture("textures/scale.png");
 

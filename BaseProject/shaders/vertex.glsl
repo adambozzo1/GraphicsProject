@@ -11,10 +11,9 @@ varying vec2 v_TextureCoords;
 varying vec3 v_Normal;
 
 void main() {
-  // interpolated parameters
   v_TextureCoords = textureCoords;
   v_Normal = normal;
 
-  // MVP transform to find position
+  // matrix mvp
   gl_Position = MVP * vec4(position, 1.0);
 }
