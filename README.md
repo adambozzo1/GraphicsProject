@@ -11,9 +11,13 @@ The "TextPotion-TORONTO_RAPTORS" folder contains the text that we tried to integ
 Part marks for all that work would be trully appreciated. Thank you!
 
 Group Members:
+
 Abhiram Sinnarajah  100569671
+
 Venujan Satchithanantham  100600999
+
 Adam Bozzo  100523248
+
 Jude Antonyrajan 100571023
 
 
