@@ -248,7 +248,7 @@ int main(int argc, char** argv) {
    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA | GLUT_DEPTH);
    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
    glutInitWindowSize(800, 600);
-   glutCreateWindow("CSCI 3090u Texture Mapping in OpenGL");
+   glutCreateWindow("CSCI 3090u Graphics Project - ANIMATED RAPTORS LOGO");
    glClearColor(1,1,1,1);
    glutIdleFunc(&update);
    glutDisplayFunc(&render);
