@@ -1,0 +1,31 @@
+----- CopyRights and Citations -----
+
+Author: Randy Fortier
+Title: 10b_TextureMapping
+Type: Graphics CSCI3090u UOIT code
+Link: https://github.com/randyfortier/CSCI3090U_Examples/tree/master/10b_TextureMapping
+The code from this lab was used as base for the sphere/basketball as well as 
+texture mapping
+
+Author: Randy Fortier
+Title: Lab02_BaseProject_DrawCube
+Type: Graphics CSCI3090u UOIT code
+Link: https://github.com/randyfortier/CSCI3090U_Labs/tree/master/Lab02_BaseProject_DrawCube
+The code from this lab was used as base for designing the text "Toronto raptors"
+
+Author: msi_333
+Title: drawing-torus-using-opengl
+Type: Graphics Torus Sample Code
+Link: https://www.codemiles.com/c-opengl-examples/drawing-torus-using-opengl-t9014.html
+This is a sample torus code written by msi_333, which uses an inbuilt torus
+function (glutSolidTorus). This gave an idea on how to create the torus
+without using equations since we failed to create one the other way.
+
+Author: Silicon Graphics, Inc
+Title: light.c
+Type: Opengl lighting model
+Link: https://courses.cs.washington.edu/courses/csep557/06au/tools/OpenGL/light.c
+We did not use this source to do the lighting effect, it was infact a youtube video.
+However upon further research, i found out that the code was originally written
+by Silicon Graphics, Inc. We have used the myinit(void) function from
+this site to create the lighting effect on the torus!
